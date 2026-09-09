@@ -1,34 +1,14 @@
 object rolando {
  
     const mochila  = #{}
-    var capacidadMochila = 2
-    var hogar = castillo
     const historialArtefactos = []
-    var poderBase = 5
-    var poderDeBatalla = 0
+    var property capacidadMochila = 2
+    var property hogar = castillo
+    var property poderBase = 5
+    var property enemigoActual = caterina
 
-    method poderDeBatalla() {
-        return poderDeBatalla
-    }
-
-    method calcularPoderDeBatalla(){
-        poderDeBatalla = poderBase + mochila.sum({artefacto => artefacto.poder()})        
-    }
-
-    method poderBase(){
-        return poderBase
-    }
-
-    method poderBase(_poderBase){
-        poderBase = _poderBase
-    }
-
-    method capacidadMochila() {
-        return capacidadMochila
-    }
-
-    method  capacidadMochila(_capacidadMochila){
-        capacidadMochila = _capacidadMochila
+    method poderDeBatalla(){
+       return  poderBase + mochila.sum({artefacto => artefacto.poder()})        
     }
 
     method mochila(){
@@ -44,14 +24,6 @@ object rolando {
         if(self.puedeRecolectar() ){
             mochila.add(artefacto)
         }
-    }
-
-    method  hogar() {
-        return hogar
-    }
-
-    method hogar(_hogar){
-        hogar = _hogar
     }
 
     method dejarObjetosEnHogar(){
@@ -71,6 +43,11 @@ object rolando {
         return historialArtefactos
     }
 
+    method batalla(){
+        mochila.forEach({artefacto => artefacto.batalla()})
+        poderBase = poderBase + 1
+    }
+
     method enemigosMenosFuertes(){
         return [caterina, archibaldo, astra].filter({enemigo => enemigo.poderDeBatalla() < self.poderDeBatalla()})
     }
@@ -83,8 +60,17 @@ object rolando {
         return self.enemigosMenosFuertes() == [caterina, archibaldo, astra]
     }
 
-    
+    method tieneArtefactoFatal(){
+        return mochila.any({artefacto => artefacto.poder(self) > enemigoActual.poderDeBatalla()})
+    }
+
+    method artefactoFatal(){
+        mochila.find({artefacto => artefacto.poder(self) > enemigoActual.poderDeBatalla()})
+    }
+
 }
+
+/////// ENEMIGOS
 
 object caterina {
 
@@ -107,140 +93,103 @@ object astra {
 }
 
 
+///// HECHIZOS
+
 object bendicion {
-    var property poder = 4
+    method poderDeBatalla(personaje) = 4
 }
+
 object invisibilidad {
-    var poder = 0
-
-    method poder(){
-        return poder
+    method poderDeBatalla(personaje){
+        return personaje.poderBase()
     }
-
-    method calcularPoder(){
-        poder = libroDeHechizos.personajeActual.poderBase()  
-    }
-
 }
+
 object invocacion {
-
-    var poder = 0
-
-    method poder(){
-        return poder
+    method poderDeBatalla(personaje){
+        return self.artefactoMasPoderosoEnMorada(personaje.hogar()).poder()
     }
 
-    method calcularPoder(){
-        poder = libroDeHechizos.personajeActual().hogar().almacen().max({artefacto => artefacto.poder()})
+    method artefactoMasPoderosoEnMorada(hogar){
+        return hogar.almacen().max({artefacto => artefacto.poder()})
     }
-
 }
+
+
+///// ARTEFACTOS
 
 
 object libroDeHechizos{
 
-    const hechizos = []
-    var poder = 0
-    var personajeActual = rolando
+    const property hechizos = []
 
-    method personajeActual(){
-        return personajeActual
-    }
-
-    method personajeActual(_personajeActual){
-        personajeActual = _personajeActual
-    }
-
-    method poder(){
-        return poder
-    }
-
-    method calcularPoder(){
-        if(hechizos.isEmpty()){
-            poder = 0
+    method poderDeBatalla(personaje){
+        return if(hechizos.isEmpty()){
+             0
         } else {
-            poder = hechizos.first().poder() 
-            hechizos.remove(hechizos.first())
+           hechizos.first().poderDeBatalla(personaje) 
         }
-         
     }
 
-    method hechizos(){
-        return hechizos
+    method batalla(){
+      if(not hechizos.isEmpty()){
+          hechizos.remove(hechizos.first())
+      }
     }
-
-    method agregarHechizos(hechizo){
-        hechizos.add(hechizo)
-    }
-
 }
 
 
 object collarDivino{
-
-    var poder = 3
-    var personajeActual = rolando
     
-    method poder() {
-        return poder
+    var usos = 0
+
+    method usos(){
+        return usos
     }
 
-    method personajeActual(){
-        return personajeActual
-    }
-
-    method personajeActual(_personajeActual){
-        personajeActual = _personajeActual
-    }
-
-    method poderCollar(){
-        if(personajeActual.poderBase() > 6){
-            poder = poder + 1
+    method poder(personaje){
+       return if(personaje.poderBase() > 6){
+             3 + usos
+        } else {
+            3
         }
     }
 
+    method batalla(){
+        usos = usos +1
+    }
 
 }
 object armaduraDeAceroValyrio{
 
-    const poder = 6
-
-    method poder() {
-        return poder
+    method poder(perosnaje) {
+        return 6
     }
+
+    method batalla(){}
 
 }
 
 object espadaDelDestino{
 
-    var poder = 0
-    var personajeActual = rolando
     var fueUsada = false
 
-    method personajeActual(){
-        return personajeActual
-    }
-
-    method personajeActual(_personajeActual){
-        personajeActual = _personajeActual
-    }
-
-    method poder() {
-        return poder
-    }
-
-    method poderEspada(){
-        if(fueUsada){
-            poder = personajeActual.poderBase() / 2
+    method poder(personaje){
+        return if(fueUsada){
+           personaje.poderBase() / 2
         } else {
-            poder = personajeActual.poderBase()
-            fueUsada = true
+           personaje.poderBase()
         }
-        poder = personajeActual.poderBase()
+           personaje.poderBase()
+    }
+
+    method batalla(){
+        fueUsada = true
     }
 
 }
 
+//// HOGAR
 
 object castillo {
     const almacen = #{}
@@ -250,3 +199,5 @@ object castillo {
     } 
 
 }
+
+
