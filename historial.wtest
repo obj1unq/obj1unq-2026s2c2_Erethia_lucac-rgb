@@ -1,7 +1,7 @@
 import rolando.*
 
-describe "pos" {
-  test "description" {
+describe "Historial de artefactos" {
+  test "Test de historial" {
     
    rolando.encontrar(espadaDelDestino)
    rolando.encontrar(collarDivino)
