@@ -1,3 +1,25 @@
 import rolando.*
 describe "Erethia" {
+
+    test "castillo"{
+    
+    rolando.encontrar(espadaDelDestino)
+    rolando.encontrar(libroDeHechizos)
+
+    assert.equals(#{espadaDelDestino, libroDeHechizos}, rolando.mochila())
+
+    rolando.hogar(castillo)
+    rolando.dejarObjetosEnHogar()
+
+    assert.equals(#{espadaDelDestino, libroDeHechizos}, castillo.almacen())
+    assert.equals(#{}, rolando.mochila())
+
+    rolando.encontrar(collarDivino)
+    rolando.dejarObjetosEnHogar()
+
+    assert.equals(#{espadaDelDestino, libroDeHechizos, collarDivino}, castillo.almacen())
+    assert.equals(#{}, rolando.mochila())
+
+    }
+
 }

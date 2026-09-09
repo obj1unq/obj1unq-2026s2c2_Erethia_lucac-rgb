@@ -1,0 +1,14 @@
+import rolando.*
+
+describe "Historial de artefactos" {
+  test "Test de historial" {
+    
+   rolando.encontrar(espadaDelDestino)
+   rolando.encontrar(collarDivino)
+   rolando.encontrar(libroDeHechizos)
+
+   assert.equals(#{espadaDelDestino, collarDivino}, rolando.mochila())
+   assert.equals([espadaDelDestino, collarDivino, libroDeHechizos], rolando.historialArtefactos()) 
+
+  }
+}

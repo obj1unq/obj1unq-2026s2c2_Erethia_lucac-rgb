@@ -159,7 +159,7 @@ Si el libro de hechizos no tiene ningún hechizo, entonces su aporte es nulo.
 Suponer que Rolando (con 5 de poder de pelea) solo tiene consigo el libro de hechizos, mientras que en su castillo tiene 
 la espada, la armadura y el collar (todo sin haber sido usado antes). Además, suponer que el libro de hechizos contiene estos tres hechizos en este orden: bendición, invisibilidad e invocación.
 
-- Antes de la primera batalla, el libro de hechizos aporta 4 de la bendición.
+- Antes de la primera batalla, el libro de hechizos aporta 4 de la bendición.  
 - Luego de la primera batalla el libro de hechizos aporta 6 por la invisibilidad.
 - Luego de la segunda batalla, el libro aporta 7, ya que la invocación otorga los 7 puntos de la espada.
 - Luego de la tercera batalla, ya no quedan más hechizos, por lo que el aporte del libro es 0
